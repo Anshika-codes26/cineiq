@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    depends_on:
+      postgres_cineiq:
+        condition: service_healthy
+      redis_cineiq:
+        condition: service_healthy
+      qdrant_cineiq:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - cineiq_ml_models:/app/app/ml/models
+    user: "1000:1000"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    user: "1000:1000"
+
+  postgres_cineiq:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cineiq
+      POSTGRES_PASSWORD: cineiq_secret
+      POSTGRES_DB: cineiq
+    ports:
+      - "5433:5432"
+    volumes:
+      - cineiq_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cineiq"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis_cineiq:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - cineiq_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  qdrant_cineiq:
+    image: qdrant/qdrant:v1.7.0
+    ports:
+      - "6334:6333"
+    volumes:
+      - cineiq_qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: cineiq_admin
+      MINIO_ROOT_PASSWORD: cineiq_secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - cineiq_minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cineiq_pg_data:
+  cineiq_redis_data:
+  cineiq_qdrant_data:
+  cineiq_minio_data:
+  cineiq_ml_models:
