@@ -75,9 +75,34 @@ async def health_check():
     # Check Gemini API
     checks["gemini_api"] = "configured" if settings.gemini_api_key else "not_configured"
     
-    all_ok = all(v in ("ok", "configured", "not_configured") for v in checks.values())
+    # Define required services that must be configured and operational for "healthy"
+    required_services = {"redis", "gemini_api"}
+    
+    # Determine if any required service is not configured
+    any_required_not_configured = any(
+        service in required_services and v == "not_configured"
+        for service, v in checks.items()
+    )
+    
+    # Determine if any required service has an error
+    any_required_error = any(
+        service in required_services and v.startswith("error:")
+        for service, v in checks.items()
+    )
+    
+    if any_required_not_configured:
+        overall_status = "not_configured"
+    elif any_required_error:
+        overall_status = "degraded"
+    else:
+        # All required services are ok/configured; check optional services
+        any_optional_error = any(
+            service not in required_services and v.startswith("error:")
+            for service, v in checks.items()
+        )
+        overall_status = "degraded" if any_optional_error else "healthy"
     
     return {
-        "status": "healthy" if all_ok else "degraded",
+        "status": overall_status,
         "checks": checks
     }
