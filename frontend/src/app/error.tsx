@@ -110,17 +110,15 @@ export default function Error({
             Try Again
           </button>
           
-          <Link href="/" passHref legacyBehavior>
-            <a className="btn btn-glass" style={{
-              padding: '12px 28px',
-              fontSize: '15px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <Home size={16} />
-              Go Home
-            </a>
+          <Link href="/" className="btn btn-glass" style={{
+            padding: '12px 28px',
+            fontSize: '15px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}>
+            <Home size={16} />
+            Go Home
           </Link>
         </div>
       </motion.div>

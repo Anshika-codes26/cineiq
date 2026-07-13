@@ -80,30 +80,26 @@ export default function NotFound() {
           justifyContent: 'center',
           flexWrap: 'wrap',
         }}>
-          <Link href="/" passHref legacyBehavior>
-            <a className="btn btn-primary" style={{
-              padding: '12px 28px',
-              fontSize: '15px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <Home size={16} />
-              Go Home
-            </a>
+          <Link href="/" className="btn btn-primary" style={{
+            padding: '12px 28px',
+            fontSize: '15px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}>
+            <Home size={16} />
+            Go Home
           </Link>
 
-          <Link href="/search" passHref legacyBehavior>
-            <a className="btn btn-glass" style={{
-              padding: '12px 28px',
-              fontSize: '15px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <Search size={16} />
-              Find Movies
-            </a>
+          <Link href="/search" className="btn btn-glass" style={{
+            padding: '12px 28px',
+            fontSize: '15px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}>
+            <Search size={16} />
+            Find Movies
           </Link>
         </div>
       </motion.div>
