@@ -61,7 +61,7 @@ global.mockNavigation = {
 // Mock next/image
 jest.mock('next/image', () => {
   const React = require('react');
-  return function MockImage({ src, alt, ...props }) {
+  return function MockImage({ src, alt, fill, sizes, priority, placeholder, blurDataURL, ...props }) {
     // eslint-disable-next-line @next/next/no-img-element
     return React.createElement('img', { src, alt, ...props });
   };

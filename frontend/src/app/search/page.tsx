@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Mic, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+const BLUR_PLACEHOLDER = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDMiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjMiIGZpbGw9IiMxYTFhMmUiLz48L3N2Zz4=";
 
 export default function SemanticSearchPage() {
   const [query, setQuery] = useState('');
@@ -99,7 +102,15 @@ export default function SemanticSearchPage() {
                 >
                   <Link href={`/movie/${movie.id}`}>
                     <div className="glass-panel" style={{ display: 'flex', padding: '16px', gap: '20px', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                      <img src={movie.poster} alt={movie.title} style={{ width: '80px', height: '120px', borderRadius: '8px', objectFit: 'cover' }} />
+                      <Image 
+                        src={movie.poster} 
+                        alt={movie.title} 
+                        width={80}
+                        height={120}
+                        placeholder="blur"
+                        blurDataURL={BLUR_PLACEHOLDER}
+                        style={{ borderRadius: '8px', objectFit: 'cover' }} 
+                      />
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                           <div>

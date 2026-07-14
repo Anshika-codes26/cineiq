@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Info } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+const BLUR_PLACEHOLDER = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDMiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjMiIGZpbGw9IiMxYTFhMmUiLz48L3N2Zz4=";
 
 // Mock data
 const heroMovie = {
@@ -115,7 +118,16 @@ export default function HomePage() {
             >
               <Link href={`/movie/${movie.id}`}>
                 <div className="movie-card">
-                  <img src={movie.poster} alt={movie.title} className="movie-poster" />
+                  <Image 
+                    src={movie.poster} 
+                    alt={movie.title} 
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={i < 4}
+                    placeholder="blur"
+                    blurDataURL={BLUR_PLACEHOLDER}
+                    className="movie-poster" 
+                  />
                   <div className="movie-overlay">
                     <div className="movie-title">{movie.title}</div>
                     <div className="movie-meta">
