@@ -66,6 +66,7 @@ export default function SemanticSearchPage() {
             <button 
               type="button"
               onClick={() => setIsListening(!isListening)}
+              aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
               style={{ background: isListening ? 'rgba(229, 9, 20, 0.1)' : 'transparent', border: 'none', padding: '12px', borderRadius: '50%', cursor: 'pointer', color: isListening ? 'var(--accent-primary)' : 'var(--text-muted)', transition: 'all 0.2s' }}
             >
               <Mic size={24} style={isListening ? { animation: 'pulse 1.5s infinite' } : {}} />
