@@ -116,6 +116,7 @@ export default function WatchRoomPage() {
               value={chatInput}
               onChange={e => setChatInput(e.target.value)}
               placeholder="Type a message..."
+              aria-label="Chat message"
               className="input-glass"
               style={{ padding: '10px 16px', fontSize: '14px' }}
             />
