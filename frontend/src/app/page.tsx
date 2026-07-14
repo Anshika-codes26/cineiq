@@ -43,15 +43,7 @@ export default function HomePage() {
   return (
     <main>
       {/* Hero Section */}
-      <section style={{
-        position: 'relative',
-        height: '85vh',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 5%',
-        overflow: 'hidden'
-      }}>
+      <section className="hero-section">
         {/* Background Image & Gradient */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: -1,
@@ -66,7 +58,7 @@ export default function HomePage() {
         }} />
 
         {/* Hero Content */}
-        <div style={{ maxWidth: '600px' }}>
+        <div className="hero-content">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,7 +67,7 @@ export default function HomePage() {
             <div style={{ color: 'var(--accent-primary)', fontWeight: 700, letterSpacing: '2px', marginBottom: '16px', fontSize: '14px' }}>
               CINEIQ PREMIERE
             </div>
-            <h1 style={{ fontSize: '72px', marginBottom: '16px', textShadow: '0 4px 24px rgba(0,0,0,0.5)' }}>
+            <h1 className="hero-title">
               {heroMovie.title}
             </h1>
             
@@ -88,7 +80,7 @@ export default function HomePage() {
               {heroMovie.overview}
             </p>
 
-            <div style={{ display: 'flex', gap: '16px' }}>
+            <div className="hero-buttons">
               <button className="btn btn-primary" style={{ padding: '14px 32px', fontSize: '16px' }}>
                 <Play size={20} fill="currentColor" /> Play Now
               </button>
@@ -101,7 +93,7 @@ export default function HomePage() {
       </section>
 
       {/* Rows */}
-      <section style={{ padding: '0 5%', marginTop: '-80px', position: 'relative', zIndex: 10 }}>
+      <section className="trending-section">
         <h3 style={{ fontSize: '24px', marginBottom: '20px' }}>Top Picks for You</h3>
         <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '32px' }}>
           {trendingMovies.map((movie, i) => (

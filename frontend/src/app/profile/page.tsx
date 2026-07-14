@@ -16,7 +16,7 @@ const tasteData = [
 export default function ProfilePage() {
   return (
     <main style={{ paddingTop: '100px', minHeight: '100vh', padding: '100px 5% 40px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '40px', maxWidth: '1200px', margin: '0 auto' }}>
+      <div className="profile-container">
         
         {/* Left Col: User Card */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
