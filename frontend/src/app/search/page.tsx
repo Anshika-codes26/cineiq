@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Mic, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SemanticSearchPage() {
   const [query, setQuery] = useState('');
@@ -60,6 +61,7 @@ export default function SemanticSearchPage() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder='e.g., "A dark sci-fi movie about aliens and time travel"'
               className="search-input"
+              aria-label="Search for movies by description"
             />
             <button 
               type="button"
@@ -99,7 +101,7 @@ export default function SemanticSearchPage() {
                 >
                   <Link href={`/movie/${movie.id}`}>
                     <div className="glass-panel search-result-item" onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                      <img src={movie.poster} alt={movie.title} style={{ width: '80px', height: '120px', borderRadius: '8px', objectFit: 'cover' }} />
+                      <Image src={movie.poster} alt={movie.title} width={80} height={120} style={{ borderRadius: '8px', objectFit: 'cover' }} />
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         <div className="search-result-header">
                           <div>
