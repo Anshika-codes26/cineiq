@@ -56,18 +56,15 @@ export default function Navigation() {
     if (!menuEl) return;
 
     const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    const focusableElements = menuEl.querySelectorAll<HTMLElement>(focusableSelector);
-    
-    if (focusableElements.length === 0) return;
 
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    // Focus the close button or first element initially
-    firstElement.focus();
-
-    const handleTab = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return;
+
+      const focusableElements = menuEl.querySelectorAll<HTMLElement>(focusableSelector);
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
 
       if (e.shiftKey) {
         if (document.activeElement === firstElement) {
@@ -82,9 +79,15 @@ export default function Navigation() {
       }
     };
 
-    menuEl.addEventListener('keydown', handleTab);
+    // Focus the first element initially
+    const focusableElements = menuEl.querySelectorAll<HTMLElement>(focusableSelector);
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      menuEl.removeEventListener('keydown', handleTab);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
