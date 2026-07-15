@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Search, Mic, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-
 interface MovieItem {
   id: string;
   title: string;
@@ -88,11 +87,13 @@ export default function SemanticSearchPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder='e.g., "A dark sci-fi movie about aliens and time travel"'
+              aria-label="Search for movies by description"
               style={{ flex: 1, background: 'transparent', border: 'none', color: 'white', fontSize: '18px', outline: 'none' }}
             />
             <button 
               type="button"
               onClick={() => setIsListening(!isListening)}
+              aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
               style={{ background: isListening ? 'rgba(229, 9, 20, 0.1)' : 'transparent', border: 'none', padding: '12px', borderRadius: '50%', cursor: 'pointer', color: isListening ? 'var(--accent-primary)' : 'var(--text-muted)', transition: 'all 0.2s' }}
             >
               <Mic size={24} style={isListening ? { animation: 'pulse 1.5s infinite' } : {}} />
@@ -153,7 +154,7 @@ export default function SemanticSearchPage() {
                     <div className="glass-panel" style={{ display: 'flex', padding: '16px', gap: '20px', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
                       {movie.poster_path ? (
                         <Image 
-                          src={movie.poster_path.startsWith('http') ? movie.poster_path : `https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                          src={movie.poster_path.startsWith('http') ? movie.poster_path : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                           alt={movie.title} 
                           width={80}
                           height={120}
@@ -181,10 +182,9 @@ export default function SemanticSearchPage() {
                           )}
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    </Link>
+                  </motion.div>
+                ))}
             </div>
           </motion.div>
         ) : null}
