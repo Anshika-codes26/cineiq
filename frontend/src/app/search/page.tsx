@@ -182,8 +182,9 @@ export default function SemanticSearchPage() {
                           )}
                         </div>
                       </div>
-                    </Link>
-                  </motion.div>
+                    </div>
+                  </Link>
+                </motion.div>
                 ))}
             </div>
           </motion.div>
