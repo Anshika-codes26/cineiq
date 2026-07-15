@@ -6,6 +6,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 :root {
+  
+
   /* Cinematic Dark Theme */
   --bg-base: #05050A; /* Extremely dark, almost black */
   --bg-surface: #0A0A14;
@@ -38,6 +40,20 @@
   --radius-full: 9999px;
 }
 
+[data-theme='light'] {
+  --bg-base: #F0F0F5;
+  --bg-surface: #FFFFFF;
+  --text-primary: #000000;
+  --text-secondary: #4A4A52;
+}
+
+[data-theme='dark'] {
+  --bg-base: #05050A;
+  --bg-surface: #0A0A14;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A1A1AA;
+}
+
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -51,6 +67,7 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -5,14 +5,18 @@ import { usePathname } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Search, Home, User, Users, Film } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTheme } from 'next-themes';
 
 export default function Navigation() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] =useState(false);
+
   useEffect(() => {
-    return scrollY.onChange((latest) => {
+    return scrollY.on("change",(latest) => {
       setIsScrolled(latest > 50);
     });
   }, [scrollY]);
@@ -97,6 +101,15 @@ export default function Navigation() {
         <button className="btn btn-glass navigation-action" style={{ padding: '8px 20px', fontSize: '13px' }}>
           Sign In
         </button>
+        {mounted && ( 
+          <button
+            className="btn btn-glass navigation-action"
+            style={{ padding: '8px 20px', fontSize: '13px', marginLeft: '10px' }}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          >
+            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </button>  
+        )}    
       </div>
     </motion.header>
   );

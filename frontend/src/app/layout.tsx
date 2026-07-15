@@ -1,3 +1,5 @@
+'use client';
+import { ThemeProvider } from 'next-themes'
 import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/Navigation';
@@ -13,13 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Navigation />
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        <div id="main-content">
-          {children}
-        </div>
+        <ThemeProvider attribute="data-theme">
+          <Navigation />
+          <a href="#main-content" className="skip-link">Skip to main content</a>
+          <div id="main-content">
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
