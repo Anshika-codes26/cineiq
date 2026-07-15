@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, useScroll, AnimatePresence } from 'framer-motion';
 import { Search, Home, User, Users, Film, Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
+import { SignInButton, UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -15,9 +16,10 @@ export default function Navigation() {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    return scrollY.onChange((latest) => {
+    const unsubscribe = scrollY.on('change', (latest) => {
       setIsScrolled(latest > 50);
     });
+    return () => unsubscribe();
   }, [scrollY]);
 
   // Lock body scroll when mobile menu is open
@@ -204,10 +206,17 @@ export default function Navigation() {
         </nav>
         
         {/* Desktop Actions */}
-        <div className="nav-desktop-actions">
-          <button className="btn btn-glass navigation-action" style={{ padding: '8px 20px', fontSize: '13px' }}>
-            Sign In
-          </button>
+        <div className="nav-desktop-actions" style={{ display: 'flex', alignItems: 'center' }}>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="btn btn-glass navigation-action" style={{ padding: '8px 20px', fontSize: '13px' }}>
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
 
         {/* Hamburger Menu Trigger Button */}
@@ -305,12 +314,21 @@ export default function Navigation() {
 
               {/* Drawer Footer Actions */}
               <motion.div className="nav-drawer-footer" variants={itemVariants}>
-                <button
-                  className="btn btn-glass"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sign In
-                </button>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button
+                      className="btn btn-glass"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <div onClick={() => setIsOpen(false)} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <UserButton />
+                  </div>
+                </SignedIn>
               </motion.div>
             </motion.div>
           </>
