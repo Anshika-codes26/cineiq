@@ -96,17 +96,20 @@ export default function HomePage() {
   }, [loadData]);
 
   useEffect(() => {
+    const fullText = "Discover films that match your soul.";
+
     let i = 0;
     const interval = setInterval(() => {
-      if (i <= fullText.length) {
-        setTypedText(fullText.slice(0, i));
-        i++;
-      } else {
-        clearInterval(interval);
-      }
+        if (i <= fullText.length) {
+            setTypedText(fullText.slice(0, i));
+            i++;
+        } else {
+            clearInterval(interval);
+        }
     }, 50);
+
     return () => clearInterval(interval);
-  }, []);
+}, []);
 
   if (loading) {
     return (
