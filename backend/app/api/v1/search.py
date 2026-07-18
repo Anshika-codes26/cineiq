@@ -10,6 +10,7 @@ from app.core.config import settings
 logger = structlog.get_logger()
 router = APIRouter(prefix="/search", tags=["search"])
 
+
 class SearchResult(BaseModel):
     id: str
     title: str
@@ -17,40 +18,43 @@ class SearchResult(BaseModel):
     poster_path: Optional[str] = None
     similarity_score: float
 
+
 class SearchResponse(BaseModel):
     query: str
     results: List[SearchResult]
 
+
 @router.get("/semantic", response_model=SearchResponse)
 async def semantic_search(
     q: str = Query(..., description="Natural language search query"),
-    limit: int = Query(10, le=50)
+    limit: int = Query(10, le=50),
 ):
     """
     Perform semantic search using Google Gemini for intent extraction and TMDB API.
     Example: 'a dark sci-fi movie about time travel'
     """
     logger.info("semantic_search", query=q, limit=limit)
-    
+
     keywords = q
-    
+
     if settings.gemini_api_key:
         try:
             import google.generativeai as genai
+
             genai.configure(api_key=settings.gemini_api_key)
             model = genai.GenerativeModel(settings.gemini_model)
-            
+
             prompt = f"""Extract main keywords from this movie search query to be used in a search engine. 
             Return ONLY the keywords separated by spaces.
             Query: "{q}"
             """
-            
+
             response = model.generate_content(prompt)
             if response.text:
-                 keywords = response.text.strip()
+                keywords = response.text.strip()
         except Exception as e:
             logger.warning("gemini_keyword_extraction_failed", error=str(e))
-            
+
     # Fallback to TMDB Search
     results = []
     if settings.tmdb_api_key:
@@ -62,12 +66,12 @@ async def semantic_search(
                         "query": keywords,
                         "include_adult": "false",
                         "language": "en-US",
-                        "page": 1
+                        "page": 1,
                     },
                     headers={
                         "Authorization": f"Bearer {settings.tmdb_api_key}",
-                        "accept": "application/json"
-                    }
+                        "accept": "application/json",
+                    },
                 )
                 if resp.status_code == 200:
                     data = resp.json()
@@ -77,8 +81,12 @@ async def semantic_search(
                                 id=str(item.get("id")),
                                 title=item.get("title", ""),
                                 overview=item.get("overview", ""),
-                                poster_path=f"https://image.tmdb.org/t/p/w500{item.get('poster_path')}" if item.get("poster_path") else None,
-                                similarity_score=0.9 # Mocked similarity
+                                poster_path=(
+                                    f"https://image.tmdb.org/t/p/w500{item.get('poster_path')}"
+                                    if item.get("poster_path")
+                                    else None
+                                ),
+                                similarity_score=0.9,  # Mocked similarity
                             )
                         )
         except Exception as e:
@@ -90,8 +98,8 @@ async def semantic_search(
                 id="12",
                 title="Arrival",
                 overview="A linguist works with the military to communicate with alien lifeforms.",
-                similarity_score=0.89
+                similarity_score=0.89,
             )
         ]
-    
+
     return SearchResponse(query=q, results=results)

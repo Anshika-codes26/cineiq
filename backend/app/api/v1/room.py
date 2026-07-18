@@ -9,6 +9,7 @@ from app.core.config import settings
 logger = structlog.get_logger()
 router = APIRouter(prefix="/room", tags=["watch-party"])
 
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, Set[WebSocket]] = {}
@@ -40,13 +41,16 @@ class ConnectionManager:
                 if connection != sender:
                     await connection.send_json(message)
 
+
 manager = ConnectionManager()
+
 
 @router.post("/create")
 async def create_room():
     """Create a new Watch-Together room."""
     room_id = str(uuid.uuid4())
     return {"room_id": room_id, "status": "created"}
+
 
 @router.websocket("/ws/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str):

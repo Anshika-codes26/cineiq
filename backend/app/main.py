@@ -20,19 +20,23 @@ def get_request_id(request: Request) -> str:
     """Return the request's correlation ID, generating one only as a fallback."""
     return getattr(request.state, "request_id", str(uuid.uuid4()))
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    logger.info("cineiq_starting", host=settings.backend_host, port=settings.backend_port)
+    logger.info(
+        "cineiq_starting", host=settings.backend_host, port=settings.backend_port
+    )
     yield
     # Shutdown
     logger.info("cineiq_stopped")
+
 
 app = FastAPI(
     title="CINEIQ API",
     description="AI-Powered Movie Recommendations and Social Discovery",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -42,6 +46,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
@@ -67,6 +72,7 @@ async def log_requests(request: Request, call_next):
     response.headers["X-Request-ID"] = request_id
     structlog.contextvars.clear_contextvars()
     return response
+
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -130,16 +136,20 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 
+
 from app.api.v1 import api_router
+
 app.include_router(api_router, prefix="/api/v1")
+
 
 @app.get("/health")
 async def health_check():
     checks = {}
-    
+
     # Check Redis
     try:
         from app.db.session import get_redis
+
         redis = get_redis()
         if redis:
             redis.ping()
@@ -148,13 +158,10 @@ async def health_check():
             checks["redis"] = "not_configured"
     except Exception as e:
         checks["redis"] = f"error: {str(e)[:100]}"
-        
+
     # Check Gemini API
     checks["gemini_api"] = "configured" if settings.gemini_api_key else "not_configured"
-    
+
     all_ok = all(v in ("ok", "configured", "not_configured") for v in checks.values())
-    
-    return {
-        "status": "healthy" if all_ok else "degraded",
-        "checks": checks
-    }
+
+    return {"status": "healthy" if all_ok else "degraded", "checks": checks}
