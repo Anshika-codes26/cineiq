@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Request
+from fastapi import APIRouter, Query
 from typing import List, Optional
 from pydantic import BaseModel
 import structlog
