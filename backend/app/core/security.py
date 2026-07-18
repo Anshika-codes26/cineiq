@@ -3,8 +3,11 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import httpx
 import time
+import structlog
 
 from app.core.config import settings
+
+logger = structlog.get_logger(__name__)
 
 security = HTTPBearer(auto_error=False)
 
@@ -82,18 +85,26 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
         if rsa_key:
             public_key = jwt.algorithms.RSAAlgorithm.from_jwk(rsa_key)
+            
+            decode_kwargs = {"algorithms": ["RS256"]}
+            if settings.clerk_jwt_audience:
+                decode_kwargs["audience"] = settings.clerk_jwt_audience
+                decode_kwargs["options"] = {"verify_aud": True}
+            else:
+                decode_kwargs["options"] = {"verify_aud": False}
+
             payload = jwt.decode(
                 token,
                 public_key,
-                algorithms=["RS256"],
-                options={"verify_aud": False}
+                **decode_kwargs
             )
             return payload
             
     except Exception as e:
+        logger.error("jwt_validation_failed", error=str(e), exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Invalid token: {str(e)}"
+            detail="Invalid or expired token"
         )
 
     raise HTTPException(
