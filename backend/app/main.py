@@ -11,6 +11,10 @@ from fastapi.responses import JSONResponse
 import structlog
 import structlog.contextvars
 
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+from app.core.rate_limit import limiter
+from app.api.v1 import api_router
 from app.core.config import settings
 
 logger = structlog.get_logger()
@@ -34,6 +38,9 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
@@ -130,10 +137,24 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 
-from app.api.v1 import api_router
+@app.exception_handler(RateLimitExceeded)
+async def custom_rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    request_id = get_request_id(request)
+    response = JSONResponse(
+        status_code=429,
+        content={
+            "detail": "Too many requests. Please try again later.",
+            "error_code": "RATE_LIMIT_EXCEEDED",
+            "request_id": request_id,
+        },
+    )
+    if hasattr(request.app.state, "limiter"):
+        response = request.app.state.limiter._route_manager.headers_handler(response)
+    return response
 app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/health")
+@limiter.exempt
 async def health_check():
     checks = {}
     
