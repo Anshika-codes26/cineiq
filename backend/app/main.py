@@ -1,4 +1,7 @@
 from contextlib import asynccontextmanager
+import time
+
+import structlog
 import traceback
 import time
 import uuid
@@ -12,8 +15,8 @@ import datetime
 import structlog
 import structlog.contextvars
 
+from app.api.v1 import api_router
 from app.core.config import settings
-
 logger = structlog.get_logger()
 
 HEALTH_ERROR_PREFIX = "error:"
@@ -140,7 +143,6 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 
-from app.api.v1 import api_router
 app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/health")
