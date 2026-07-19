@@ -16,32 +16,12 @@ export default function SemanticSearchPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [isListening, setIsListening] = useState(false);
 
-  // Mock results including home page movies
+  // Mock results
   const results = [
-    { id: '1', title: 'Dune: Part Two', year: '2024', match: 98, poster: 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGqpTd4p.jpg', desc: 'Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family sci-fi.' },
-    { id: '2', title: 'Oppenheimer', year: '2023', match: 96, poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg', desc: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.' },
-    { id: '3', title: 'Poor Things', year: '2023', match: 91, poster: 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8PhcbTi03XQ5VGe1T.jpg', desc: 'The incredible tale of Bella Baxter, a young woman brought back to life by the brilliant and unorthodox scientist Dr. Godwin Baxter.' },
-    { id: '4', title: 'Arrival', year: '2016', match: 94, poster: 'https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg', desc: 'A linguist works with the military to communicate with alien lifeforms sci-fi space aliens.' },
-    { id: '5', title: 'Interstellar', year: '2014', match: 89, poster: 'https://image.tmdb.org/t/p/w500/gEU2QlsE1ZEbKU01E8XgK31rGfQ.jpg', desc: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival sci-fi.' },
-    { id: '6', title: 'Inception', year: '2010', match: 93, poster: 'https://image.tmdb.org/t/p/w500/oYuLEt3zVCKqA3F0B7I2G0kE7Y.jpg', desc: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea sci-fi.' },
-    { id: '7', title: 'Contact', year: '1997', match: 82, poster: 'https://image.tmdb.org/t/p/w500/bT2B1xQx7M4zZ2E2A6eO7FhIbbB.jpg', desc: 'Dr. Ellie Arroway finds conclusive radio proof of extraterrestrial intelligence sci-fi space aliens.' }
+    { id: '1', title: 'Arrival', year: '2016', match: 94, poster: 'https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg', desc: 'A linguist works with the military to communicate with alien lifeforms.' },
+    { id: '2', title: 'Interstellar', year: '2014', match: 89, poster: 'https://image.tmdb.org/t/p/w500/gEU2QlsE1ZEbKU01E8XgK31rGfQ.jpg', desc: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.' },
+    { id: '3', title: 'Contact', year: '1997', match: 82, poster: 'https://image.tmdb.org/t/p/w500/bT2B1xQx7M4zZ2E2A6eO7FhIbbB.jpg', desc: 'Dr. Ellie Arroway finds conclusive radio proof of extraterrestrial intelligence.' }
   ];
-
-  const getFilteredResults = () => {
-    if (!query) return [];
-    const q = query.toLowerCase().trim();
-    if (q === 'sci-fi' || q === 'space aliens') {
-      return results.filter(m => m.desc.toLowerCase().includes('sci-fi') || m.desc.toLowerCase().includes('space') || m.desc.toLowerCase().includes('alien'));
-    }
-    const words = q.split(/\s+/).filter(Boolean);
-    return results.filter(movie => {
-      const title = movie.title.toLowerCase();
-      const desc = movie.desc.toLowerCase();
-      return title.includes(q) || desc.includes(q) || words.some(w => title.includes(w) || desc.includes(w));
-    });
-  };
-
-  const filteredResults = getFilteredResults();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,7 +98,7 @@ export default function SemanticSearchPage() {
                 setTimeout(() => setIsSearching(false), 1200);
               }} 
             />
-          ) : filteredResults.length === 0 ? (
+          ) : (query.toLowerCase() !== 'sci-fi' && query.toLowerCase() !== 'space aliens' && results.filter(m => m.title.toLowerCase().includes(query.toLowerCase()) || m.desc.toLowerCase().includes(query.toLowerCase())).length === 0) ? (
             <EmptyState 
               title="No Movie Recommendations" 
               description={`We couldn't find any films matching "${query}". Try searching for categories like "sci-fi" or "time travel".`}
@@ -135,7 +115,8 @@ export default function SemanticSearchPage() {
               Top Semantic Matches
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {filteredResults
+              {results
+                .filter(m => query.toLowerCase() === 'sci-fi' || query.toLowerCase() === 'space aliens' || m.title.toLowerCase().includes(query.toLowerCase()) || m.desc.toLowerCase().includes(query.toLowerCase()))
                 .map((movie, i) => (
                   <motion.div
                     key={movie.id}
