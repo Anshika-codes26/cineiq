@@ -1,9 +1,9 @@
 from contextlib import asynccontextmanager
 import time
+import uuid
 
 import structlog
 import traceback
-import uuid
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
