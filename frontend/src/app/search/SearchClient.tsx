@@ -66,8 +66,7 @@ export default function SemanticSearchPage() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder='e.g., "A dark sci-fi movie about aliens and time travel"'
               aria-label="Search for movies by description"
-              style={{ flex: 1, background: 'transparent', border: 'none', color: 'white', fontSize: '18px', outline: 'none' }}
-            />
+style={{ flex: 1, background: 'transparent', border: 'none', color: 'var(--text-primary)', fontSize: '18px', outline: 'none' }}            />
             <button 
               type="button"
               onClick={() => setIsListening(!isListening)}

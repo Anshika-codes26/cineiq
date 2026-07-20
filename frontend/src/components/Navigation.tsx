@@ -6,7 +6,7 @@ import { motion, useScroll, AnimatePresence } from 'framer-motion';
 import { Search, Home, User, Users, Film, Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { SignInButton, UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
-
+import ThemeToggleButton from './ThemeToggleButton';
 export default function Navigation() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -147,10 +147,9 @@ export default function Navigation() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: isScrolled ? 'rgba(5, 5, 10, 0.85)' : 'transparent',
+background: isScrolled ? 'var(--bg-overlay)' : 'transparent',
           backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-          borderBottom: isScrolled ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
-          transition: 'all 0.3s ease',
+          borderBottom: isScrolled ? '1px solid rgba(var(--overlay-rgb), 0.05)' : '1px solid transparent',          transition: 'all 0.3s ease',
         }}
       >
         <Link
@@ -205,10 +204,10 @@ export default function Navigation() {
           })}
         </nav>
         
-        {/* Desktop Actions */}
-        <div className="nav-desktop-actions" style={{ display: 'flex', alignItems: 'center' }}>
-          <SignedOut>
-            <SignInButton mode="modal">
+{/* Desktop Actions */}
+        <div className="nav-desktop-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <ThemeToggleButton />
+          <SignedOut>            <SignInButton mode="modal">
               <button className="btn btn-glass navigation-action" style={{ padding: '8px 20px', fontSize: '13px' }}>
                 Sign In
               </button>
@@ -313,9 +312,11 @@ export default function Navigation() {
               </nav>
 
               {/* Drawer Footer Actions */}
-              <motion.div className="nav-drawer-footer" variants={itemVariants}>
-                <SignedOut>
-                  <SignInButton mode="modal">
+<motion.div className="nav-drawer-footer" variants={itemVariants} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <ThemeToggleButton />
+                </div>
+                <SignedOut>                  <SignInButton mode="modal">
                     <button
                       className="btn btn-glass"
                       onClick={() => setIsOpen(false)}
