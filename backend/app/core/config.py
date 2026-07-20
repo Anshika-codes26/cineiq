@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     backend_cors_origins: str | List[str] = ["http://localhost:3000", "https://*.vercel.app"]
     backend_host: str = "0.0.0.0"
     backend_port: int = 8001
+    max_room_participants: int = 10
 
     # Upstash Redis
     upstash_redis_url: str = ""
@@ -16,6 +17,12 @@ class Settings(BaseSettings):
     # Auth
     clerk_secret_key: str = ""
     next_public_clerk_publishable_key: str = ""
+    clerk_audience: str = ""
+
+    # Rate Limiting
+    rate_limit_enabled: bool = True
+    rate_limit_global: str = "100/minute"
+    rate_limit_semantic_search: str = "10/minute"
 
     # External APIs
     tmdb_api_key: str = ""
