@@ -98,7 +98,7 @@ export default function SemanticSearchPage() {
                   transition={{ delay: i * 0.1 }}
                 >
                   <Link href={`/movie/${movie.id}`}>
-                    <div className="glass-panel" style={{ display: 'flex', padding: '16px', gap: '20px', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+                    <div className="glass-panel search-result-card" style={{ display: 'flex', padding: '16px', gap: '20px', cursor: 'pointer', transition: 'transform 0.2s' }}>
                       <img src={movie.poster} alt={movie.title} style={{ width: '80px', height: '120px', borderRadius: '8px', objectFit: 'cover' }} />
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
