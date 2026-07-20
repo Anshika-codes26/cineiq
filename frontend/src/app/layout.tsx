@@ -19,14 +19,16 @@ export default function RootLayout({
 
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="data-theme">
-          <Navigation />
-          <a href="#main-content" className="skip-link">Skip to main content</a>
-          <div id="main-content">
+        <ClerkProvider>
+         <ThemeProvider attribute="data-theme">
+           <Navigation />
+           <a href="#main-content" className="skip-link">Skip to main content</a>
+           <div id="main-content">
             {children}
-          </div>
+           </div>
 
-        </ThemeProvider>
+         </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
 
