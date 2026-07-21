@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/Navigation';
 
-import { ThemeProvider } from '@/context/ThemeContext';import { ClerkProvider } from '@clerk/nextjs';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { ClerkProvider } from '@clerk/nextjs';
 
-import CustomCursor from '@/components/CustomCursor';import { ClerkProvider } from '@clerk/nextjs';
-
+import CustomCursor from '@/components/CustomCursor';
 
 export const metadata: Metadata = {
   title: 'CINEIQ | Discover Movies Together',
@@ -19,10 +19,9 @@ export default function RootLayout({
 }) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2luZWlxLmNsZXJrLmFjY291bnRzLmRldiQ';
 
- return (
+  return (
     <ClerkProvider publishableKey={publishableKey}>
       <html lang="en">
-
         <head>
           <script
             dangerouslySetInnerHTML={{
@@ -46,14 +45,7 @@ export default function RootLayout({
               {children}
             </div>
           </ThemeProvider>
-
-<body>
           <CustomCursor />
-          <Navigation />          <a href="#main-content" className="skip-link">Skip to main content</a>
-          <div id="main-content">
-            {children}
-          </div>
-
         </body>
       </html>
     </ClerkProvider>
