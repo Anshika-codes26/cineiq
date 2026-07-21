@@ -710,6 +710,7 @@ body.custom-cursor-active button {
 .theme-toggle-btn:hover {
   background: rgba(var(--overlay-rgb), 0.15);
   transform: scale(1.05);
+}
 
 .custom-cursor-dot {
   position: fixed;
