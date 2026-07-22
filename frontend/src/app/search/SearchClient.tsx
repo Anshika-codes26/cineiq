@@ -18,15 +18,15 @@ export default function SemanticSearchPage() {
 
   // Expanded movie database for instant title and semantic movie search
   const ALL_MOVIES = [
-    { id: '1', title: 'Arrival', year: '2016', match: 94, poster: 'https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg', desc: 'A linguist works with the military to communicate with alien lifeforms.' },
-    { id: '2', title: 'Interstellar', year: '2014', match: 92, poster: 'https://image.tmdb.org/t/p/w500/gEU2QlsE1ZEbKU01E8XgK31rGfQ.jpg', desc: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.' },
-    { id: '3', title: 'Oppenheimer', year: '2023', match: 96, poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGvF8Z1nCio.jpg', desc: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.' },
-    { id: '4', title: 'Dune: Part Two', year: '2024', match: 95, poster: 'https://image.tmdb.org/t/p/w500/1pdfLPoVxftY9tWzZ1W2PAzftgE.jpg', desc: 'Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family.' },
-    { id: '5', title: 'Inception', year: '2010', match: 91, poster: 'https://image.tmdb.org/t/p/w500/oYuLEW9W2vBBGLn2gRAtHDxW6G.jpg', desc: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.' },
-    { id: '6', title: 'Poor Things', year: '2023', match: 88, poster: 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg', desc: 'The incredible tale of Bella Baxter, a young woman brought back to life by the brilliant scientist Dr. Godwin Baxter.' },
-    { id: '7', title: 'Contact', year: '1997', match: 85, poster: 'https://image.tmdb.org/t/p/w500/bT2B1xQx7M4zZ2E2A6eO7FhIbbB.jpg', desc: 'Dr. Ellie Arroway finds conclusive radio proof of extraterrestrial intelligence.' },
-    { id: '8', title: 'Blade Runner 2049', year: '2017', match: 90, poster: 'https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg', desc: 'Young Blade Runner K\'s discovery of a long-buried secret leads him to track down former Blade Runner Rick Deckard.' },
-    { id: '9', title: 'The Dark Knight', year: '2008', match: 97, poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg', desc: 'Batman raises the stakes in his war on crime with the help of Lt. Jim Gordon and Harvey Dent to fight the Joker.' }
+    { id: '1', title: 'Arrival', year: '2016', match: 94, poster: 'https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg', desc: 'A linguist works with the military to communicate with alien visitors.' },
+    { id: '2', title: 'Interstellar', year: '2014', match: 92, poster: 'https://image.tmdb.org/t/p/w500/gEU2QlsE1ZEbKU01E8XgK31rGfQ.jpg', desc: 'A team of explorers travel through a wormhole in space.' },
+    { id: '3', title: 'Oppenheimer', year: '2023', match: 96, poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGvF8Z1nCio.jpg', desc: 'The story of American scientist J. Robert Oppenheimer and the atomic bomb.' },
+    { id: '4', title: 'Dune: Part Two', year: '2024', match: 95, poster: 'https://image.tmdb.org/t/p/w500/1pdfLPoVxftY9tWzZ1W2PAzftgE.jpg', desc: 'Paul Atreides unites with Chani and the Fremen while seeking revenge.' },
+    { id: '5', title: 'Inception', year: '2010', match: 91, poster: 'https://image.tmdb.org/t/p/w500/oYuLEW9W2vBBGLn2gRAtHDxW6G.jpg', desc: 'A thief who steals corporate secrets through dreams.' },
+    { id: '6', title: 'Poor Things', year: '2023', match: 88, poster: 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg', desc: 'The incredible tale of Bella Baxter, a young woman brought to life.' },
+    { id: '7', title: 'Contact', year: '1997', match: 85, poster: 'https://image.tmdb.org/t/p/w500/bT2B1xQx7M4zZ2E2A6eO7FhIbbB.jpg', desc: 'Dr. Ellie Arroway finds conclusive radio proof of extraterrestrial life.' },
+    { id: '8', title: 'Blade Runner 2049', year: '2017', match: 90, poster: 'https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg', desc: 'Young Blade Runner K\'s discovery of a long-buried secret.' },
+    { id: '9', title: 'The Dark Knight', year: '2008', match: 97, poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg', desc: 'Batman raises the stakes in his war on crime.' },
   ];
 
   const [searchResults, setSearchResults] = useState<typeof ALL_MOVIES | null>(null);
@@ -87,7 +87,7 @@ export default function SemanticSearchPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(139, 92, 246, 0.1)', color: 'var(--accent-secondary)', padding: '6px 16px', borderRadius: '999px', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(139, 92, 246, 0.1)', color: 'var(--accent-secondary)', padding: '6px 16px', borderRadius: '999px' }}>
               <Sparkles size={14} /> AI-Powered Search
             </div>
             <h1 className="search-title" style={{ fontSize: '48px', marginBottom: '16px' }}>Describe what you want to watch</h1>
@@ -110,12 +110,6 @@ export default function SemanticSearchPage() {
             <input 
               type="text" 
               value={query}
-
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder='e.g., "A dark sci-fi movie about aliens and time travel"'
-              aria-label="Search for movies by description"
-style={{ flex: 1, background: 'transparent', border: 'none', color: 'var(--text-primary)', fontSize: '18px', outline: 'none' }}            />
-
               onChange={(e) => {
                 setQuery(e.target.value);
                 if (searchResults !== null) setSearchResults(null);
@@ -123,14 +117,14 @@ style={{ flex: 1, background: 'transparent', border: 'none', color: 'var(--text-
               placeholder='Search by movie title (e.g. Oppenheimer) or "dark sci-fi time travel"...'
               aria-label="Search for movies by description or title"
               className="search-input"
-              style={{ flex: 1, background: 'transparent', border: 'none', color: 'white', fontSize: '18px', outline: 'none' }}
+              style={{ flex: 1, background: 'transparent', border: 'none', color: 'var(--text-primary)', fontSize: '18px', outline: 'none' }}
             />
 
             <button 
               type="button"
               onClick={() => setIsListening(!isListening)}
               aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
-              style={{ background: isListening ? 'rgba(229, 9, 20, 0.1)' : 'transparent', border: 'none', padding: '12px', borderRadius: '50%', cursor: 'pointer', color: isListening ? 'var(--accent-primary)' : 'var(--text-muted)', transition: 'all 0.2s' }}
+              style={{ background: isListening ? 'rgba(229, 9, 20, 0.1)' : 'transparent', border: 'none', padding: '12px', borderRadius: '50%', cursor: 'pointer', color: isListening ? 'var(--accent-primary)' : 'var(--text-muted)' }}
             >
               <Mic size={24} style={isListening ? { animation: 'pulse 1.5s infinite' } : {}} />
             </button>
@@ -188,7 +182,7 @@ style={{ flex: 1, background: 'transparent', border: 'none', color: 'var(--text-
                     transition={{ delay: i * 0.1 }}
                   >
                     <Link href={`/movie/${movie.id}`}>
-                      <div className="glass-panel search-result-item" style={{ display: 'flex', padding: '16px', gap: '20px', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+                      <div className="glass-panel search-result-item" style={{ display: 'flex', padding: '16px', gap: '20px', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.02)')} onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}>
                         <Image 
                           src={movie.poster} 
                           alt={movie.title} 
