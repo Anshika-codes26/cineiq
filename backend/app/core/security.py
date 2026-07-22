@@ -3,8 +3,11 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import httpx
 import time
+import structlog
 
 from app.core.config import settings
+
+logger = structlog.get_logger()
 
 security = HTTPBearer(auto_error=False)
 
@@ -38,8 +41,7 @@ async def get_jwks():
                 }
                 return jwks
     except Exception as e:
-        import logging
-        logging.getLogger("uvicorn").error(f"Failed to fetch JWKS: {e}")
+        logger.error("jwks_fetch_failed", error=str(e))
         return None
 
 async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
