@@ -7,7 +7,6 @@ import { Search, Home, User, Users, Film } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 
-
 export default function Navigation() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -36,10 +35,9 @@ export default function Navigation() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: isScrolled ? 'rgba(5, 5, 10, 0.85)' : 'transparent',
+background: isScrolled ? 'var(--bg-overlay)' : 'transparent',
           backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-          borderBottom: isScrolled ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
-          transition: 'all 0.3s ease',
+          borderBottom: isScrolled ? '1px solid rgba(var(--overlay-rgb), 0.05)' : '1px solid transparent',          transition: 'all 0.3s ease',
         }}
       >
         <Link
@@ -93,6 +91,7 @@ export default function Navigation() {
             );
           })}
         </nav>
+
        
         <div>
               <button className="btn btn-glass navigation-action" style={{ padding: '8px 20px', fontSize: '13px' }}>
@@ -109,5 +108,6 @@ export default function Navigation() {
         )}    
       </div>
     </motion.header>
+                         
   );
 }
