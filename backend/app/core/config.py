@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     backend_port: int = 8001
     max_room_participants: int = 10
 
+    # Database
+    database_url: str = ""
+
     # Upstash Redis
     upstash_redis_url: str = ""
     upstash_redis_token: str = ""

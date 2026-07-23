@@ -201,17 +201,27 @@ async def health_check():
             redis_status = "not_configured"
     except Exception as e:
         redis_status = f"{HEALTH_ERROR_PREFIX}{str(e)[:100]}"
-
+        
+    # Check Postgres
+    try:
+        from app.db.session import engine
+        from sqlalchemy import text
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+        postgres_status = "ok"
+    except Exception as e:
+        postgres_status = f"{HEALTH_ERROR_PREFIX}{str(e)[:100]}"
     # Check Gemini API
     gemini_status = "configured" if settings.gemini_api_key else "not_configured"
 
     checks = {
         "redis": {"status": redis_status, "last_checked": last_checked},
+        "postgres": {"status": postgres_status, "last_checked": last_checked},
         "gemini_api": {"status": gemini_status, "last_checked": last_checked},
     }
 
     # Define required services that must be configured and operational for "healthy"
-    required_services = {"redis", "gemini_api"}
+    required_services = {"redis", "postgres", "gemini_api"}
 
     # Determine if any required service is not configured
     any_required_not_configured = any(
