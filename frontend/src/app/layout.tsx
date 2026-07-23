@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/Navigation';
-import ScrollToTopButton from '@/components/ScrollToTopButton';
-import CustomCursor from '@/components/CustomCursor';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { ClerkProvider } from '@clerk/nextjs';
+import CustomCursor from '@/components/CustomCursor';
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 export const metadata: Metadata = {
   title: 'CINEIQ | Discover Movies Together',
@@ -20,13 +21,30 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={publishableKey}>
       <html lang="en">
+        <head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function () {
+                  try {
+                    var stored = localStorage.getItem('cineiq-theme');
+                    var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                    document.documentElement.setAttribute('data-theme', theme);
+                  } catch (e) {}
+                })();
+              `,
+            }}
+          />
+        </head>
         <body>
+          <ThemeProvider>
+            <Navigation />
+            <a href="#main-content" className="skip-link">Skip to main content</a>
+            <div id="main-content">
+              {children}
+            </div>
+          </ThemeProvider>
           <CustomCursor />
-          <Navigation />
-          <a href="#main-content" className="skip-link">Skip to main content</a>
-          <div id="main-content">
-            {children}
-          </div>
           <ScrollToTopButton />
         </body>
       </html>
